@@ -1,7 +1,8 @@
 <?php
+ini_set('display_errors', 1);
 
-require 'db.php';
 require 'Slim/Slim.php';
+require 'User.php';
 
 // $host = "localhost";
 // $user = "root";
@@ -21,14 +22,6 @@ $app->run();
 
 
 function login($login, $password){
-	$connection = getDB();
-	$query = 'SELECT * FROM user WHERE username = "' . $login .'" AND password = "' . $password . '"';
-	$statement = $connection->query($query);
-	$result = $statement->fetchAll(PDO::FETCH_CLASS);
-	if(count($result) === 1){
-		echo json_encode(array("status" => "success"));
-	}else{
-		echo json_encode(array("status" => "fail"));
-	}
-	$connection = null;
+	$return = User::connect($login, $password);
+	echo $return;
 }
