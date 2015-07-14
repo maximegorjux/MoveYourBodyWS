@@ -13,12 +13,13 @@ class Event_model extends CI_Model{
 		return $query->result();
 	}
 
-	public function create($title, $description, $date, $latitude, $longitude, $sport){
+	public function create($title, $description, $date, $latitude, $longitude, $sport, $idUser){
 		$query = 'INSERT INTO event (title, description, date_event, latitude, longitude, sport) VALUES 
 		("' . $title . '", "' . $description . '", "' . $date . '", ' . $latitude . ', ' . $longitude . ', "' . $sport . '")';
 		$this->db->query($query);
 		if($this->db->affected_rows()){
-			return json_encode(array("status" => "success"));
+			$idEvent = $this->db->insert_id();
+			return $this->joinEvent($idEvent, $idUser);
 		}else{
 			return json_encode(array("status" => "fail"));
 		}
@@ -60,7 +61,7 @@ class Event_model extends CI_Model{
 	}
 
 	public function joinEvent($idEvent, $idUser){
-		$query = 'INSERT INTO join (idEvent, idUser) VALUES (' . $idEvent . ', ' . $idUser . ')';
+		$query = 'INSERT INTO `join` (idEvent, idUser) VALUES (' . $idEvent . ', ' . $idUser . ')';
 		$this->db->query($query);
 		if($this->db->affected_rows()){
 			return json_encode(array("status" => "success"));
