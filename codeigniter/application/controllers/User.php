@@ -15,7 +15,7 @@ class User extends REST_Controller {
 		if($login && $password){
 			$data = $this->user_model->connect($login, $password);
 			if($data){
-				$this->response(array('status' => 'success'), 200);
+				$this->response(array('status' => 'success', 'id' => $data['id']), 200);
 			}else{
 				$this->response(array('status' => 'fail'), 200);
 			}
