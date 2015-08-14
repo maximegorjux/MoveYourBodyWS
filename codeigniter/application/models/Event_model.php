@@ -13,9 +13,9 @@ class Event_model extends CI_Model{
 		return $query->result();
 	}
 
-	public function create($title, $description, $date, $latitude, $longitude, $sport, $idUser){
-		$query = 'INSERT INTO event (title, description, date_event, latitude, longitude, sport) VALUES 
-		("' . $title . '", "' . $description . '", "' . $date . '", ' . $latitude . ', ' . $longitude . ', "' . $sport . '")';
+	public function create($title, $description, $date, $latitude, $longitude, $sport, $numberPeople, $idUser){
+		$query = 'INSERT INTO event (title, description, date_event, latitude, longitude, sport, numberPeople, idUser) VALUES 
+		("' . $title . '", "' . $description . '", "' . $date . '", ' . $latitude . ', ' . $longitude . ', "' . $sport . '", ' . $numberPeople . ', ' . $idUser . ')';
 		$this->db->query($query);
 		if($this->db->affected_rows()){
 			$idEvent = $this->db->insert_id();

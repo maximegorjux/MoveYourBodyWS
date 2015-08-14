@@ -19,7 +19,7 @@ class User_model extends CI_Model{
 			VALUES ("' . $login . '", "' . $password . '", "' . $mail . '", "' .$name . '")';
 			$this->db->query($query);
 			if($this->db->affected_rows()){
-				return json_encode(array("status" => "success"));
+				return json_encode(array("status" => "success", "id" => $this->db->insert_id()));
 			}else{
 				return json_encode(array("status" => "fail"));
 			}

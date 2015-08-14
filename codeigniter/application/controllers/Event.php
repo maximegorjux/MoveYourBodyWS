@@ -28,13 +28,14 @@ class Event extends REST_Controller{
 		$latitude = $this->post('latitude');
 		$longitude = $this->post('longitude');
 		$sport = $this->post('sport');
+		$numberPeople = $this->post('numberPeople');
 
 		// TODO : ajouter l'auteur de l'événement dans la table join ???
 
 		$idUser = $this->post('idUser');
 		
-		if($title && $description && $date && $latitude && $longitude && $sport && $idUser){
-			$data = $this->event_model->create($title, $description, $date, $latitude, $longitude, $sport, $idUser);
+		if($title && $description && $date && $latitude && $longitude && $sport && $idUser && $numberPeople){
+			$data = $this->event_model->create($title, $description, $date, $latitude, $longitude, $sport, $numberPeople, $idUser);
 			$this->response($data, 200);
 		}else{
 			$this->response(NULL, 400);
