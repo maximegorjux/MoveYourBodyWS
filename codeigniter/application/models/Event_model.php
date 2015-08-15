@@ -71,8 +71,16 @@ class Event_model extends CI_Model{
 	}
 
 	public function getEventsForUser($idUser){
-		$query = $this->db->query('SELECT * FROM join WHERE idUser = ' . $idUser);
-		return json_encode($query->result());
+		$query = $this->db->query('SELECT idEvent FROM `join` WHERE idUser = "' . $idUser .'"');
+		$data = array();
+		foreach ($query->result() as $row){
+			$event = $this->db->query('SELECT title FROM event WHERE id = ' . $row->idEvent);
+			$data[$row->idEvent] = $event->result()[0]->title;
+		}
+		if(!empty($data)){
+			return json_encode(array('status' => 'success', 'result' => $data));
+		}
+		return json_encode(array('status' => 'fail'));
 	}
 
 	private function mydeg2rad($deg) {
