@@ -60,7 +60,7 @@ class Event extends REST_Controller{
 		$distance = $this->get('distance');
 		if($latitude && $longitude && $distance){
 			$data = $this->event_model->getEventsNearFrom($latitude, $longitude, $distance);
-			$this->response($data, 200);
+			$this->response(json_encode($data), 200);
 		}else{
 			$this->response(NULL, 400);
 		}
