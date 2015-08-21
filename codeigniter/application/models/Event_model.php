@@ -74,8 +74,18 @@ class Event_model extends CI_Model{
 		$query = $this->db->query('SELECT idEvent FROM `join` WHERE idUser = "' . $idUser .'"');
 		$data = array();
 		foreach ($query->result() as $row){
-			$event = $this->db->query('SELECT title FROM event WHERE id = ' . $row->idEvent);
-			$data[] = array('id' => $row->idEvent, 'title' => $event->result()[0]->title);
+			$event = $this->db->query('SELECT * FROM event WHERE id = ' . $row->idEvent);
+			$data[] = array(
+				'id' => $event->result()[0]->id,
+				'title' => $event->result()[0]->title,
+				'description' => $event->result()[0]->description,
+				'date' => $event->result()[0]->date_event,
+				'latitude' => $event->result()[0]->latitude,
+				'longitude' => $event->result()[0]->longitude,
+				'sport' => $event->result()[0]->sport,
+				'numberPeople' => $event->result()[0]->numberPeople,
+				'idUser' => $event->result()[0]->idUser,
+			);
 		}
 		if(!empty($data)){
 			return array('status' => 'success', "result" => $data);
