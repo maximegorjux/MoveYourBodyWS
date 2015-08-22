@@ -74,10 +74,10 @@ class Event_model extends CI_Model{
 		$query = $this->db->query('SELECT idEvent FROM `join` WHERE idUser = "' . $idUser .'"');
 		$data = array();
 		foreach ($query->result() as $row){
+			// var_dump('SELECT * FROM event WHERE id = ' . $row->idEvent . ' AND date_event >= NOW()');
+			// die();
 			$event = $this->db->query('SELECT * FROM event WHERE id = ' . $row->idEvent . ' AND date_event >= NOW()');
-			//var_dump($event);
-			//die();
-			//if($event->num_rows){
+			if(!empty($event->result())){
 				$data[] = array(
 					'id' => $event->result()[0]->id,
 					'title' => $event->result()[0]->title,
@@ -89,7 +89,7 @@ class Event_model extends CI_Model{
 					'numberPeople' => $event->result()[0]->numberPeople,
 					'idUser' => $event->result()[0]->idUser,
 				);
-			//}
+			}
 		}
 		if(!empty($data)){
 			return array('status' => 'success', "result" => $data);
