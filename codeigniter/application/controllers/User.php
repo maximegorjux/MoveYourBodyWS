@@ -29,6 +29,10 @@ class User extends REST_Controller {
 		$password = $this->post('password');
 		$mail = $this->post('mail');
 		$name = $this->post('name');
+		$options = [
+		    'cost' => 12,
+		];
+		$password = password_hash($password, PASSWORD_BCRYPT, $options);
 		if($login && $password && $mail && $name){
 			$data = $this->user_model->signup($login, $password, $mail, $name);
 			$this->response($data, 200);

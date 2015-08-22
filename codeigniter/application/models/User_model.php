@@ -27,8 +27,15 @@ class User_model extends CI_Model{
 	}
 
 	public function connect($login, $password){
-
-		$query = $this->db->get_where('user', array('username' => $login, 'password' => $password));
-		return $query->row_array();
+		$query = 'SELECT id, username, password FROM user WHERE username = "' . $login . '"';
+		$query = $this->db->query($query);
+		$user = $query->row_array();
+		if($user){
+			if(password_verify($password, $user['password'])){
+				return $user;
+			}
+			return null;
+		}
+		return null;
 	}
 }

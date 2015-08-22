@@ -74,23 +74,27 @@ class Event_model extends CI_Model{
 		$query = $this->db->query('SELECT idEvent FROM `join` WHERE idUser = "' . $idUser .'"');
 		$data = array();
 		foreach ($query->result() as $row){
-			$event = $this->db->query('SELECT * FROM event WHERE id = ' . $row->idEvent);
-			$data[] = array(
-				'id' => $event->result()[0]->id,
-				'title' => $event->result()[0]->title,
-				'description' => $event->result()[0]->description,
-				'date' => $event->result()[0]->date_event,
-				'latitude' => $event->result()[0]->latitude,
-				'longitude' => $event->result()[0]->longitude,
-				'sport' => $event->result()[0]->sport,
-				'numberPeople' => $event->result()[0]->numberPeople,
-				'idUser' => $event->result()[0]->idUser,
-			);
+			$event = $this->db->query('SELECT * FROM event WHERE id = ' . $row->idEvent . ' AND date_event >= NOW()');
+			//var_dump($event);
+			//die();
+			//if($event->num_rows){
+				$data[] = array(
+					'id' => $event->result()[0]->id,
+					'title' => $event->result()[0]->title,
+					'description' => $event->result()[0]->description,
+					'date' => $event->result()[0]->date_event,
+					'latitude' => $event->result()[0]->latitude,
+					'longitude' => $event->result()[0]->longitude,
+					'sport' => $event->result()[0]->sport,
+					'numberPeople' => $event->result()[0]->numberPeople,
+					'idUser' => $event->result()[0]->idUser,
+				);
+			//}
 		}
 		if(!empty($data)){
 			return array('status' => 'success', "result" => $data);
 		}
-		return json_encode(array("status" => "fail"));
+		return array("status" => "fail");
 	}
 
 	private function mydeg2rad($deg) {
