@@ -36,12 +36,12 @@ class Event_model extends CI_Model{
 	}
 
 	public function getEventsNearFrom($latitude, $longitude, $distance){
-		$query = $this->db->query('SELECT * FROM event');
+		$query = $this->db->query('SELECT * FROM event WHERE date_event >= NOW()');
 		$data = $query->result();
 		$result = array();
 		foreach ($data as $event) {
-			$deltaLat = $this->mydeg2rad($event->latitude() - $latitude);
-			$deltaLong = $this->mydeg2rad($event->longitude() - $longitude);
+			$deltaLat = $this->mydeg2rad(($event->latitude) - $latitude);
+			$deltaLong = $this->mydeg2rad(($event->longitude) - $longitude);
 
 			$radius = 6371;
 
@@ -49,7 +49,7 @@ class Event_model extends CI_Model{
 			cos($this->mydeg2rad($latitude)) * cos($this->mydeg2rad($longitude)) *
 			sin($deltaLong/2) * sin($deltaLong/2);
 
-			$c =  2 * atan2(sqrt(a), sqrt(1-a));
+			$c =  2 * atan2(sqrt($a), sqrt(1-$a));
 			$d = $radius * $c;
 			$d = ceil($d);
 
@@ -57,7 +57,10 @@ class Event_model extends CI_Model{
 				$result[] = $event;
 			}
 		}
-		return json_encode($result);
+		if(!empty($result)){
+			return array("status" => "success", "result" => $result);
+		}
+		return array("status" => "fail");
 	}
 
 	public function joinEvent($idEvent, $idUser){
